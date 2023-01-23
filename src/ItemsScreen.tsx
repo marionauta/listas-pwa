@@ -51,12 +51,12 @@ export default function ItemsScreen({ items, listId, closeList, sendJsonMessage,
 
   return (
     <>
-      <div className="toolbar">
+      <header className="toolbar">
         <button onClick={closeList}>X</button>
-        <input value={value} onKeyDown={e => e.key === "Enter" && createItem()} onChange={(e) => setValue(e.target.value)} />
+        <input type="text" value={value} onKeyDown={e => e.key === "Enter" && createItem()} onChange={(e) => setValue(e.target.value)} />
         <button onClick={createItem}>Add</button>
         <button onClick={deleteCompleted}>Delete completed</button>
-      </div>
+      </header>
       <ItemList items={items} toggleItem={toggleItem} editItem={editItem} />
       {itemToEdit && <ItemEditor item={itemToEdit} saveItem={updateItem} close={editItem(undefined)} />}
     </>

@@ -18,8 +18,13 @@ export default function ListsScreen({ lists, setList, readyState, sendJsonMessag
 
   return (
     <>
+      <header className="toolbar">
+        <h1>
+          Lists
+        </h1>
+      </header>
       {lists.map(list =>
-        <div className="list-row" key={list.id} onClick={() => setList(list)}>{list.name}</div>
+        <div className="row" key={list.id} onClick={() => setList(list)}>{list.name}</div>
       )}
     </>
   );
