@@ -16,7 +16,7 @@ const ItemList = ({ items, toggleItem, editItem }: Props) => {
             <input
               id={item.id}
               type="checkbox"
-              checked={item.completed_at !== null}
+              checked={item.completedAt !== null}
               onChange={toggleItem(item)}
             />
             <span className="principal">{item.name}</span>

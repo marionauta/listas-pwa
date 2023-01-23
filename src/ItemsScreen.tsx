@@ -39,8 +39,8 @@ export default function ItemsScreen({ items, listId, closeList, sendJsonMessage,
   const toggleItem = useCallback(
     (item: Item) => () => updateItem({
       ...item,
-      completed_at:
-        item.completed_at === null ? Math.floor(Date.now() / 1000) : null
+      completedAt:
+        item.completedAt === null ? Math.floor(Date.now() / 1000) : null
     }),
     [updateItem],
   );
