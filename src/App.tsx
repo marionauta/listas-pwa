@@ -1,5 +1,10 @@
-import { useState, useCallback } from "react";
-import { useAppState, itemsSelector, listsSelector, selectedListSelector } from "./AppState";
+import { useCallback } from "react";
+import {
+  useAppState,
+  itemsSelector,
+  listsSelector,
+  selectedListSelector,
+} from "./AppState";
 import { ConnectionBanner } from "./components/ConnectionBanner";
 import ItemsScreen from "./ItemsScreen";
 import ListsScreen from "./ListsScreen";
@@ -13,9 +18,12 @@ export default function App() {
   const lists = listsSelector(state);
   const selectedList = selectedListSelector(state);
 
-  const setList = useCallback((list: List | undefined) => {
-    dispatch({ type: "ui/list-selected", payload: list });
-  }, [dispatch])
+  const setList = useCallback(
+    (list: List | undefined) => {
+      dispatch({ type: "ui/list-selected", payload: list });
+    },
+    [dispatch],
+  );
 
   const unsetList = useCallback(() => {
     setList(undefined);
@@ -29,26 +37,29 @@ export default function App() {
     [dispatch],
   );
 
-  const { sendJsonMessage, readyState } = useConnection({ onMessage });
+  const { sendJsonMessage, readyState, tryReconnect } = useConnection({
+    onMessage,
+  });
 
   return (
     <>
-      <ConnectionBanner readyState={readyState} />
-      {selectedList === undefined
-        ? <ListsScreen
-            lists={lists}
-            setList={setList}
-            sendJsonMessage={sendJsonMessage}
-            readyState={readyState}
-          />
-        : <ItemsScreen
-            items={items}
-            listId={selectedList.id}
-            closeList={unsetList}
-            sendJsonMessage={sendJsonMessage}
-            readyState={readyState}
-          />
-      }
+      <ConnectionBanner readyState={readyState} tryReconnect={tryReconnect} />
+      {selectedList === undefined ? (
+        <ListsScreen
+          lists={lists}
+          setList={setList}
+          sendJsonMessage={sendJsonMessage}
+          readyState={readyState}
+        />
+      ) : (
+        <ItemsScreen
+          items={items}
+          listId={selectedList.id}
+          closeList={unsetList}
+          sendJsonMessage={sendJsonMessage}
+          readyState={readyState}
+        />
+      )}
     </>
   );
 }

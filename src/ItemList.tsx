@@ -1,8 +1,11 @@
+import { Button, DialogTrigger } from "react-aria-components";
+import ItemEditor from "./ItemEditor";
+
 type Props = {
   items: any[];
   toggleItem: (item: any) => () => void;
   editItem: (item: any) => () => void;
-}
+};
 
 const ItemList = ({ items, toggleItem, editItem }: Props) => {
   if (items.length === 0) {
@@ -20,12 +23,16 @@ const ItemList = ({ items, toggleItem, editItem }: Props) => {
               onChange={toggleItem(item)}
             />
             <span className="principal">{item.name}</span>
-            <button onClick={editItem(item)}>⌘</button>
+            {/* <button onClick={editItem(item)}>⌘</button> */}
+            <DialogTrigger>
+              <Button>⌘</Button>
+              <ItemEditor item={item} saveItem={editItem} />
+            </DialogTrigger>
           </label>
         ))}
       </div>
     </div>
   );
-}
+};
 
 export default ItemList;
