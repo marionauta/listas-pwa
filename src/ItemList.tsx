@@ -1,14 +1,15 @@
 import { Button, DialogTrigger } from "react-aria-components";
 import ItemEditor from "./ItemEditor";
+import { Item } from "./models/Item";
 
 type Props = {
-  items: any[];
+  items: Item[] | undefined;
   toggleItem: (item: any) => () => void;
   editItem: (item: any) => () => void;
 };
 
 const ItemList = ({ items, toggleItem, editItem }: Props) => {
-  if (items.length === 0) {
+  if (items === undefined || items.length === 0) {
     return null;
   }
   return (

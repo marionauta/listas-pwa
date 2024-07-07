@@ -25,7 +25,7 @@ export default function ItemsScreen({
     if (readyState !== ReadyState.OPEN) {
       return;
     }
-    sendJsonMessage({ action: "get-items", payload: { listId } });
+    // sendJsonMessage({ action: "get-items", payload: { listId } });
   }, [readyState, listId, sendJsonMessage]);
 
   const [value, setValue] = useState("");

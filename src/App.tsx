@@ -8,15 +8,13 @@ import {
 import { ConnectionBanner } from "./components/ConnectionBanner";
 import ItemsScreen from "./ItemsScreen";
 import ListsScreen from "./ListsScreen";
-import { List } from "./models/List";
+import { ItemList, List } from "./models/List";
 import { useConnection } from "./useConnection";
 
 export default function App() {
-  const [state, dispatch] = useAppState();
+  const { state, dispatch, selectedList, sendJsonMessage } = useAppState();
 
-  const items = itemsSelector(state);
   const lists = listsSelector(state);
-  const selectedList = selectedListSelector(state);
 
   const setList = useCallback(
     (list: List | undefined) => {
@@ -26,7 +24,7 @@ export default function App() {
   );
 
   const unsetList = useCallback(() => {
-    setList(undefined);
+    // setList(undefined);
   }, [setList]);
 
   const onMessage = useCallback(
@@ -37,7 +35,7 @@ export default function App() {
     [dispatch],
   );
 
-  const { sendJsonMessage, readyState, tryReconnect } = useConnection({
+  const { readyState, tryReconnect } = useConnection({
     onMessage,
   });
 
@@ -53,8 +51,8 @@ export default function App() {
         />
       ) : (
         <ItemsScreen
-          items={items}
-          listId={selectedList.id}
+          items={selectedList.items}
+          listId={""}
           closeList={unsetList}
           sendJsonMessage={sendJsonMessage}
           readyState={readyState}

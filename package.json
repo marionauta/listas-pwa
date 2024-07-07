@@ -7,10 +7,17 @@
     "preview": "bunx --bun vite preview"
   },
   "dependencies": {
+    "@automerge/automerge": "^2.2.2",
+    "@automerge/automerge-repo": "^1.1.12",
+    "@automerge/automerge-repo-network-broadcastchannel": "^1.1.12",
+    "@automerge/automerge-repo-network-websocket": "^1.1.12",
+    "@automerge/automerge-repo-react-hooks": "^1.1.12",
+    "@automerge/automerge-repo-storage-indexeddb": "^1.1.12",
     "react": "18.2.0",
     "react-aria-components": "^1.2.0",
     "react-dom": "18.2.0",
-    "react-use-websocket": "4.8.1"
+    "react-use-websocket": "4.8.1",
+    "vite-plugin-wasm": "^3.3.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
@@ -19,6 +26,10 @@
     "typescript": "^4.1.3",
     "vite": "^5.3.3"
   },
-
-  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
