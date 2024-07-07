@@ -1,32 +1,32 @@
-import { useCallback, useEffect, useState } from "react";
-import { ReadyState } from "react-use-websocket";
+import { useCallback, useState } from "react";
 import ItemEditor from "./ItemEditor";
 import ItemList from "./ItemList";
 import { Item } from "./models/Item";
-import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { Button, Input, Header } from "react-aria-components";
+import { ServerAction } from "./AppState";
+import { useLoaderData } from "react-router-dom";
+import { useDocument } from "@automerge/automerge-repo-react-hooks";
+import type { ItemList as ItemListType } from "./models/List";
+import { AnyDocumentId } from "@automerge/automerge-repo";
+import { Doc } from "@automerge/automerge";
+
+interface LoaderData {
+  list: Doc<ItemListType> | undefined;
+  listId: AnyDocumentId;
+}
+
+export function loader({ params }: any): LoaderData {
+  const [list] = useDocument<ItemListType>(params.listId);
+  return { list, listId: params.listId };
+}
 
 type Props = {
-  items: Item[];
-  listId: string;
   closeList: () => void;
-  sendJsonMessage: SendJsonMessage;
-  readyState: ReadyState;
+  sendJsonMessage: (action: ServerAction) => void;
 };
 
-export default function ItemsScreen({
-  items,
-  listId,
-  closeList,
-  sendJsonMessage,
-  readyState,
-}: Props) {
-  useEffect(() => {
-    if (readyState !== ReadyState.OPEN) {
-      return;
-    }
-    // sendJsonMessage({ action: "get-items", payload: { listId } });
-  }, [readyState, listId, sendJsonMessage]);
+export default function ItemsScreen({ closeList, sendJsonMessage }: Props) {
+  const { list, listId } = useLoaderData() as LoaderData;
 
   const [value, setValue] = useState("");
   const [itemToEdit, setItemToEdit] = useState<Item | undefined>(undefined);
@@ -65,6 +65,10 @@ export default function ItemsScreen({
     [setItemToEdit],
   );
 
+  if (!list) {
+    return <span>Retrieving list...</span>;
+  }
+
   return (
     <>
       <Header className="toolbar">
@@ -78,7 +82,11 @@ export default function ItemsScreen({
         <Button onPress={createItem}>Add</Button>
         <Button onPress={deleteCompleted}>Delete completed</Button>
       </Header>
-      <ItemList items={items} toggleItem={toggleItem} editItem={editItem} />
+      <ItemList
+        items={list.items}
+        toggleItem={toggleItem}
+        editItem={editItem}
+      />
       {/* {itemToEdit && (
         <ItemEditor
           item={itemToEdit}

@@ -1,18 +1,12 @@
 import { useCallback } from "react";
-import {
-  useAppState,
-  itemsSelector,
-  listsSelector,
-  selectedListSelector,
-} from "./AppState";
-import { ConnectionBanner } from "./components/ConnectionBanner";
-import ItemsScreen from "./ItemsScreen";
+import { useAppState, listsSelector, ServerAction } from "./AppState";
+import ItemsScreen, { loader as itemsLoader } from "./ItemsScreen";
 import ListsScreen from "./ListsScreen";
-import { ItemList, List } from "./models/List";
-import { useConnection } from "./useConnection";
+import { List } from "./models/List";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 export default function App() {
-  const { state, dispatch, selectedList, sendJsonMessage } = useAppState();
+  const { state, dispatch, sendJsonMessage } = useAppState();
 
   const lists = listsSelector(state);
 
@@ -27,37 +21,25 @@ export default function App() {
     // setList(undefined);
   }, [setList]);
 
-  const onMessage = useCallback(
-    (message: MessageEvent) => {
-      const data = JSON.parse(message.data);
-      dispatch({ type: data.action, payload: data.payload });
-    },
-    [dispatch],
-  );
-
-  const { readyState, tryReconnect } = useConnection({
-    onMessage,
-  });
-
-  return (
-    <>
-      <ConnectionBanner readyState={readyState} tryReconnect={tryReconnect} />
-      {selectedList === undefined ? (
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: (
         <ListsScreen
           lists={lists}
           setList={setList}
           sendJsonMessage={sendJsonMessage}
-          readyState={readyState}
         />
-      ) : (
-        <ItemsScreen
-          items={selectedList.items}
-          listId={""}
-          closeList={unsetList}
-          sendJsonMessage={sendJsonMessage}
-          readyState={readyState}
-        />
-      )}
-    </>
-  );
+      ),
+    },
+    {
+      path: "/list/:listId",
+      loader: itemsLoader,
+      element: (
+        <ItemsScreen closeList={unsetList} sendJsonMessage={sendJsonMessage} />
+      ),
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
 }

@@ -3,7 +3,7 @@ import { Item } from "./models/Item";
 import { ItemList, List } from "./models/List";
 import { AnyDocumentId } from "@automerge/automerge-repo";
 import { useDocument } from "@automerge/automerge-repo-react-hooks";
-import { uuid, List as AList } from "@automerge/automerge";
+import { List as AList } from "@automerge/automerge";
 
 interface UIState {
   selectedListId: AnyDocumentId | undefined;
@@ -24,7 +24,7 @@ const initialState: AppState = {
 };
 
 export type AppAction = { type: string; payload: any };
-export type ServerAction = { action: string; payload: any };
+export type ServerAction = { action: string; payload?: any };
 
 export function useAppState() {
   const [selectedList, changeList] = useDocument<ItemList>(

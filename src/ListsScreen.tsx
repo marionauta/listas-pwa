@@ -1,29 +1,19 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { Header, Heading } from "react-aria-components";
-import { ReadyState } from "react-use-websocket";
-import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { List } from "./models/List";
+import { ServerAction } from "./AppState";
 
 type Props = {
   lists: List[];
   setList: (list: List) => void;
-  readyState: ReadyState;
-  sendJsonMessage: SendJsonMessage;
+  sendJsonMessage: (action: ServerAction) => void;
 };
 
 export default function ListsScreen({
   lists,
   setList,
-  readyState,
   sendJsonMessage,
 }: Props) {
-  useEffect(() => {
-    if (readyState !== ReadyState.OPEN) {
-      return;
-    }
-    sendJsonMessage({ action: "get-lists" });
-  }, [readyState]);
-
   const onListPress = useCallback(
     (list: List) => () => {
       setList(list);
