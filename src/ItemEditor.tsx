@@ -1,5 +1,4 @@
-import { useCallback } from "react";
-import { useState } from "react";
+import type { FormEvent } from "react";
 import {
   Button,
   Dialog,
@@ -7,49 +6,49 @@ import {
   Modal,
   TextField,
   Input,
+  Form,
+  Label,
 } from "react-aria-components";
-import { Item } from "./models/Item";
+import type { Item } from "./models/Item";
 
 type Props = {
   item: Item;
   saveItem: (item: Item) => void;
-  // close: () => void;
 };
 
-const ItemEditor = ({ item, saveItem }: Props) => {
-  const [name, setName] = useState(item.name);
-
-  const onChangeName = useCallback(
-    (event: any) => {
-      setName(event.target.value);
-    },
-    [setName],
-  );
-  const onSaveItem = useCallback(() => {
-    if (item === undefined || name === undefined) return;
-    const updated = {
-      ...item,
-      name,
+function ItemEditor({ item, saveItem }: Props) {
+  const onSubmit =
+    (close: () => void) => (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const formData = new FormData(form);
+      const name = formData.get("name");
+      if (typeof name !== "string") return;
+      const updated: Item = {
+        ...item,
+        name,
+      };
+      saveItem(updated);
+      close();
     };
-    saveItem(updated);
-  }, [name]);
 
   return (
     <Modal>
       <Dialog>
         {({ close }) => (
-          <form>
+          <Form onSubmit={onSubmit(close)}>
             <Heading slot="title">Rename item</Heading>
-            <TextField autoFocus>
-              <Input type="text" value={name} onChange={onChangeName} />
+            <TextField autoFocus defaultValue={item.name}>
+              <Label>Name</Label>
+              <Input type="text" name="name" />
             </TextField>
-            <Button onPress={onSaveItem}>Change</Button>
+            <Button type="submit">Change</Button>
             <Button onPress={close}>Cancel</Button>
-          </form>
+          </Form>
         )}
       </Dialog>
     </Modal>
   );
-};
+}
 
 export default ItemEditor;

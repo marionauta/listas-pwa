@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useAppState, listsSelector, ServerAction } from "./AppState";
+import { useAppState, listsSelector } from "./AppState";
 import ItemsScreen, { loader as itemsLoader } from "./ItemsScreen";
 import ListsScreen from "./ListsScreen";
 import { List } from "./models/List";

@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import ItemEditor from "./ItemEditor";
 import ItemList from "./ItemList";
 import { Item } from "./models/Item";
 import { Button, Input, Header } from "react-aria-components";
@@ -29,7 +28,6 @@ export default function ItemsScreen({ closeList, sendJsonMessage }: Props) {
   const { list, listId } = useLoaderData() as LoaderData;
 
   const [value, setValue] = useState("");
-  const [itemToEdit, setItemToEdit] = useState<Item | undefined>(undefined);
 
   const createItem = useCallback(() => {
     const name = value;
@@ -58,13 +56,6 @@ export default function ItemsScreen({ closeList, sendJsonMessage }: Props) {
     [updateItem],
   );
 
-  const editItem = useCallback(
-    (item: Item | undefined) => () => {
-      setItemToEdit(item);
-    },
-    [setItemToEdit],
-  );
-
   if (!list) {
     return <span>Retrieving list...</span>;
   }
@@ -85,15 +76,8 @@ export default function ItemsScreen({ closeList, sendJsonMessage }: Props) {
       <ItemList
         items={list.items}
         toggleItem={toggleItem}
-        editItem={editItem}
+        editItem={updateItem}
       />
-      {/* {itemToEdit && (
-        <ItemEditor
-          item={itemToEdit}
-          saveItem={updateItem}
-          close={editItem(undefined)}
-        />
-      )} */}
     </>
   );
 }
