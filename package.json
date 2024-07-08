@@ -4,6 +4,7 @@
   "scripts": {
     "start": "bunx --bun vite",
     "build": "tsc && bunx --bun vite build",
+	"build:cf": "tsc && npx vite build",
     "preview": "bunx --bun vite preview"
   },
   "dependencies": {
