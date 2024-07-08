@@ -6,14 +6,9 @@ import { ServerAction } from "./AppState";
 type Props = {
   lists: List[];
   setList: (list: List) => void;
-  sendJsonMessage: (action: ServerAction) => void;
 };
 
-export default function ListsScreen({
-  lists,
-  setList,
-  sendJsonMessage,
-}: Props) {
+export default function ListsScreen({ lists, setList }: Props) {
   const onListPress = useCallback(
     (list: List) => () => {
       setList(list);

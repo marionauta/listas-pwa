@@ -1,50 +1,114 @@
-import { useCallback, useState } from "react";
+import { FormEvent, useCallback } from "react";
 import ItemList from "./ItemList";
 import { Item } from "./models/Item";
-import { Button, Input, Header } from "react-aria-components";
+import { Button, Input, Header, Form } from "react-aria-components";
 import { ServerAction } from "./AppState";
 import { useLoaderData } from "react-router-dom";
 import { useDocument } from "@automerge/automerge-repo-react-hooks";
 import type { ItemList as ItemListType } from "./models/List";
-import { AnyDocumentId } from "@automerge/automerge-repo";
-import { Doc } from "@automerge/automerge";
+import { DocumentId, isValidDocumentId } from "@automerge/automerge-repo";
+import { List as AList } from "@automerge/automerge";
 
 interface LoaderData {
-  list: Doc<ItemListType> | undefined;
-  listId: AnyDocumentId;
+  listId: DocumentId | undefined;
 }
 
 export function loader({ params }: any): LoaderData {
-  const [list] = useDocument<ItemListType>(params.listId);
-  return { list, listId: params.listId };
+  const listId = params.listId;
+  if (isValidDocumentId(listId)) {
+    return { listId };
+  }
+  return { listId: undefined };
+}
+
+function useList(listId: DocumentId | undefined) {
+  const [list, changeList] = useDocument<ItemListType>(listId);
+
+  const dispatch = useCallback(
+    (action: ServerAction) => {
+      switch (action.action) {
+        case "create-item":
+          if (!action.payload.name) {
+            break;
+          }
+          const id = crypto.randomUUID();
+          changeList((doc) => {
+            if (!doc.items) {
+              doc.items = [] as unknown as AList<Item>;
+            }
+            doc.items.push({
+              id,
+              name: action.payload.name,
+              completedAt: null,
+            });
+          });
+          break;
+        case "update-item":
+          changeList((doc) => {
+            const index = doc.items.findIndex(
+              (item) => item.id === action.payload.id,
+            );
+            if (index !== -1) {
+              doc.items[index].name = action.payload.name;
+              doc.items[index].completedAt = action.payload.completedAt;
+            }
+          });
+          break;
+        case "delete-completed":
+          const indexesToDelete: number[] = [];
+          changeList((doc) => {
+            for (let index = 0; index < doc.items.length; index++) {
+              if (doc.items[index].completedAt !== null) {
+                indexesToDelete.push(index);
+              }
+            }
+            for (const index of indexesToDelete.reverse()) {
+              doc.items.deleteAt(index);
+            }
+          });
+          break;
+      }
+    },
+    [changeList],
+  );
+
+  return [list, dispatch] as const;
 }
 
 type Props = {
   closeList: () => void;
-  sendJsonMessage: (action: ServerAction) => void;
 };
 
-export default function ItemsScreen({ closeList, sendJsonMessage }: Props) {
-  const { list, listId } = useLoaderData() as LoaderData;
+export default function ItemsScreen({ closeList }: Props) {
+  const { listId } = useLoaderData() as LoaderData;
+  const [list, dispatch] = useList(listId);
 
-  const [value, setValue] = useState("");
-
-  const createItem = useCallback(() => {
-    const name = value;
-    sendJsonMessage({ action: "create-item", payload: { listId, name } });
-    setValue("");
-  }, [sendJsonMessage, setValue, value]);
+  const onCreateItem = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const data = new FormData(form);
+      const itemName = data.get("item-name");
+      if (itemName && typeof itemName === "string") {
+        dispatch({ action: "create-item", payload: { name: itemName } });
+        form.reset();
+        const inputs = form.getElementsByTagName("input");
+        (inputs[0] as HTMLInputElement).focus();
+      }
+    },
+    [dispatch],
+  );
 
   const updateItem = useCallback(
     (item: Item) => {
-      sendJsonMessage({ action: "update-item", payload: { listId, ...item } });
+      dispatch({ action: "update-item", payload: { listId, ...item } });
     },
-    [sendJsonMessage],
+    [dispatch],
   );
 
   const deleteCompleted = useCallback(() => {
-    sendJsonMessage({ action: "delete-completed", payload: { listId } });
-  }, [sendJsonMessage]);
+    dispatch({ action: "delete-completed", payload: { listId } });
+  }, [dispatch]);
 
   const toggleItem = useCallback(
     (item: Item) => () =>
@@ -56,23 +120,24 @@ export default function ItemsScreen({ closeList, sendJsonMessage }: Props) {
     [updateItem],
   );
 
+  if (!listId) {
+    return <span>Invalid document id</span>;
+  }
+
   if (!list) {
     return <span>Retrieving list...</span>;
   }
 
   return (
     <>
-      <Header className="toolbar">
-        <Button onPress={closeList}>X</Button>
-        <Input
-          type="text"
-          value={value}
-          onKeyDown={(e) => e.key === "Enter" && createItem()}
-          onChange={(e) => setValue(e.target.value)}
-        />
-        <Button onPress={createItem}>Add</Button>
-        <Button onPress={deleteCompleted}>Delete completed</Button>
-      </Header>
+      <Form onSubmit={onCreateItem}>
+        <Header className="toolbar">
+          <Button onPress={closeList}>X</Button>
+          <Input type="text" name="item-name" />
+          <Button type="submit">Add</Button>
+          <Button onPress={deleteCompleted}>Delete completed</Button>
+        </Header>
+      </Form>
       <ItemList
         items={list.items}
         toggleItem={toggleItem}

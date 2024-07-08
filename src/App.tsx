@@ -6,7 +6,7 @@ import { List } from "./models/List";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 export default function App() {
-  const { state, dispatch, sendJsonMessage } = useAppState();
+  const { state, dispatch } = useAppState();
 
   const lists = listsSelector(state);
 
@@ -24,20 +24,12 @@ export default function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: (
-        <ListsScreen
-          lists={lists}
-          setList={setList}
-          sendJsonMessage={sendJsonMessage}
-        />
-      ),
+      element: <ListsScreen lists={lists} setList={setList} />,
     },
     {
       path: "/list/:listId",
       loader: itemsLoader,
-      element: (
-        <ItemsScreen closeList={unsetList} sendJsonMessage={sendJsonMessage} />
-      ),
+      element: <ItemsScreen closeList={unsetList} />,
     },
   ]);
 

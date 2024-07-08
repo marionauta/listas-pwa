@@ -27,58 +27,6 @@ export type AppAction = { type: string; payload: any };
 export type ServerAction = { action: string; payload?: any };
 
 export function useAppState() {
-  const [selectedList, changeList] = useDocument<ItemList>(
-    "2mynQrvC4FR8EDMYVpsLWnahuYd1" as AnyDocumentId,
-  );
-
-  const sendJsonMessage = useCallback(
-    (action: ServerAction) => {
-      switch (action.action) {
-        case "create-item":
-          if (!action.payload.name) {
-            break;
-          }
-          const id = crypto.randomUUID();
-          changeList((doc) => {
-            if (!doc.items) {
-              doc.items = [] as unknown as AList<Item>;
-            }
-            doc.items.push({
-              id,
-              name: action.payload.name,
-              completedAt: null,
-            });
-          });
-          break;
-        case "update-item":
-          changeList((doc) => {
-            const index = doc.items.findIndex(
-              (item) => item.id === action.payload.id,
-            );
-            if (index !== -1) {
-              doc.items[index].name = action.payload.name;
-              doc.items[index].completedAt = action.payload.completedAt;
-            }
-          });
-          break;
-        case "delete-completed":
-          const indexesToDelete: number[] = [];
-          changeList((doc) => {
-            for (let index = 0; index < doc.items.length; index++) {
-              if (doc.items[index].completedAt !== null) {
-                indexesToDelete.push(index);
-              }
-            }
-            for (const index of indexesToDelete.reverse()) {
-              doc.items.deleteAt(index);
-            }
-          });
-          break;
-      }
-    },
-    [changeList],
-  );
-
   function reducer(state: AppState, action: AppAction): AppState {
     switch (action.type) {
       case "list-updated": {
@@ -129,7 +77,7 @@ export function useAppState() {
     }
   }
   const [state, dispatch] = useReducer(reducer, initialState);
-  return { state, dispatch, selectedList, sendJsonMessage };
+  return { state, dispatch };
 }
 
 export const itemsSelector = (state: AppState) => Object.values(state.items);
