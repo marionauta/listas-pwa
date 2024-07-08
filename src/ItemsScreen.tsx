@@ -2,8 +2,7 @@ import { FormEvent, useCallback } from "react";
 import ItemList from "./ItemList";
 import { Item } from "./models/Item";
 import { Button, Input, Header, Form } from "react-aria-components";
-import { ServerAction } from "./AppState";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { useDocument } from "@automerge/automerge-repo-react-hooks";
 import type { ItemList as ItemListType } from "./models/List";
 import { DocumentId, isValidDocumentId } from "@automerge/automerge-repo";
@@ -20,6 +19,8 @@ export function loader({ params }: any): LoaderData {
   }
   return { listId: undefined };
 }
+
+export type ServerAction = { action: string; payload?: any };
 
 function useList(listId: DocumentId | undefined) {
   const [list, changeList] = useDocument<ItemListType>(listId);
@@ -75,11 +76,7 @@ function useList(listId: DocumentId | undefined) {
   return [list, dispatch] as const;
 }
 
-type Props = {
-  closeList: () => void;
-};
-
-export default function ItemsScreen({ closeList }: Props) {
+export default function ItemsScreen() {
   const { listId } = useLoaderData() as LoaderData;
   const [list, dispatch] = useList(listId);
 
@@ -132,7 +129,9 @@ export default function ItemsScreen({ closeList }: Props) {
     <>
       <Form onSubmit={onCreateItem}>
         <Header className="toolbar">
-          <Button onPress={closeList}>X</Button>
+          <Link to="/">
+            <Button onPress={(event) => event.preventDefault()}>X</Button>
+          </Link>
           <Input type="text" name="item-name" />
           <Button type="submit">Add</Button>
           <Button onPress={deleteCompleted}>Delete completed</Button>

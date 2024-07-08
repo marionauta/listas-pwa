@@ -1,20 +1,49 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Header, Heading } from "react-aria-components";
 import { List } from "./models/List";
-import { ServerAction } from "./AppState";
+import { Link } from "react-router-dom";
+import { DocumentId, isValidDocumentId } from "@automerge/automerge-repo";
 
-type Props = {
-  lists: List[];
-  setList: (list: List) => void;
-};
+function useListsReader() {
+  const [listIds, setListIds] = useState<DocumentId[]>([]);
+  useEffect(() => {
+    async function someting() {
+      const db: IDBDatabase = await new Promise((resolve, reject) => {
+        const openRequest = window.indexedDB.open("automerge", 1);
+        openRequest.onerror = function () {
+          reject(openRequest.error);
+        };
+        openRequest.onupgradeneeded = function (event) {
+          const db = (event.target as IDBOpenDBRequest).result;
+          db.createObjectStore("documents");
+        };
+        openRequest.onsuccess = function () {
+          const db = openRequest.result;
+          resolve(db);
+        };
+      });
+      const transaction = db.transaction("documents");
+      const store = transaction.objectStore("documents");
+      const allRequest = store.getAllKeys();
+      allRequest.onsuccess = function () {
+        const keys = allRequest.result as [string, string, string];
+        const keySet = new Set<DocumentId>();
+        for (const key of keys) {
+          if (isValidDocumentId(key[0])) {
+            keySet.add(key[0]);
+          }
+        }
+        console.warn(keySet);
+        setListIds(Array.from(keySet));
+      };
+    }
+    someting().catch(console.error);
+  }, [setListIds]);
+  return [listIds];
+}
 
-export default function ListsScreen({ lists, setList }: Props) {
-  const onListPress = useCallback(
-    (list: List) => () => {
-      setList(list);
-    },
-    [setList],
-  );
+export default function ListsScreen() {
+  const [lists] = useListsReader();
 
   return (
     <>
@@ -22,9 +51,11 @@ export default function ListsScreen({ lists, setList }: Props) {
         <Heading level={1}>Lists</Heading>
       </Header>
       {lists.map((list) => (
-        <div className="row" key={list.id} onClick={onListPress(list)}>
-          {list.name}
-        </div>
+        <Link to={`/list/${list}`}>
+          <div className="row" key={list}>
+            {list}
+          </div>
+        </Link>
       ))}
     </>
   );
