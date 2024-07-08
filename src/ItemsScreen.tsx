@@ -130,7 +130,7 @@ export default function ItemsScreen() {
       <Form onSubmit={onCreateItem}>
         <Header className="toolbar">
           <Link to="/">
-            <Button onPress={(event) => event.preventDefault()}>X</Button>
+            <span>X</span>
           </Link>
           <Input type="text" name="item-name" />
           <Button type="submit">Add</Button>

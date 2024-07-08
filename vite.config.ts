@@ -5,13 +5,20 @@ import wasm from "vite-plugin-wasm";
 
 export default defineConfig({
   base: "/",
+
+  esbuild: {
+    supported: {
+      "top-level-await": true,
+    },
+  },
+
   plugins: [
     wasm(),
     react(),
     pwa({
       registerType: "autoUpdate",
       workbox: {
-        globPatterns: ["**/*.{js,ts,css,html,ico,png,svg}"],
+        globPatterns: ["**/*.{js,css,png,wasm}"],
       },
       manifest: {
         id: "/",
