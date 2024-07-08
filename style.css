@@ -15,6 +15,8 @@ body {
     margin: 0;
     color: var(--color-text);
     background: var(--color-background);
+    /* disable safari mobile zoom */
+    touch-action: pan-x pan-y;
 }
 
 button {
