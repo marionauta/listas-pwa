@@ -12,7 +12,7 @@ import {
 import type { ItemList } from "./models/List";
 import { useNavigate } from "react-router-dom";
 
-export function ListCreatorDialog() {
+export default function ListCreatorDialog() {
   const repo = useRepo();
   const navigate = useNavigate();
   const createItemList = useCallback(

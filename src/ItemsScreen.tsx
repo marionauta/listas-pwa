@@ -1,12 +1,11 @@
 import { FormEvent, useCallback } from "react";
-import ItemList from "./ItemList";
-import { Item } from "./models/Item";
+import { type DocumentId, isValidDocumentId } from "@automerge/automerge-repo";
+import { useDocument } from "@automerge/automerge-repo-react-hooks";
 import { Button, Input, Header, Form } from "react-aria-components";
 import { Link, useLoaderData } from "react-router-dom";
-import { useDocument } from "@automerge/automerge-repo-react-hooks";
+import ItemRow from "./ItemRow";
+import type { Item } from "./models/Item";
 import type { ItemList as ItemListType } from "./models/List";
-import { DocumentId, isValidDocumentId } from "@automerge/automerge-repo";
-import { List as AList } from "@automerge/automerge";
 
 interface LoaderData {
   listId: DocumentId | undefined;
@@ -35,7 +34,7 @@ function useList(listId: DocumentId | undefined) {
           const id = crypto.randomUUID();
           changeList((doc) => {
             if (!doc.items) {
-              doc.items = [] as unknown as AList<Item>;
+              doc.items = [] as unknown as ItemListType["items"];
             }
             doc.items.push({
               id,
@@ -137,7 +136,7 @@ export default function ItemsScreen() {
           <Button onPress={deleteCompleted}>Delete completed</Button>
         </Header>
       </Form>
-      <ItemList
+      <ItemRow
         items={list.items}
         toggleItem={toggleItem}
         editItem={updateItem}

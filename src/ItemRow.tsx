@@ -8,7 +8,7 @@ type Props = {
   editItem: (item: Item) => void;
 };
 
-const ItemList = ({ items, toggleItem, editItem }: Props) => {
+export default function ItemRow({ items, toggleItem, editItem }: Props) {
   if (items === undefined || items.length === 0) {
     return null;
   }
@@ -33,6 +33,4 @@ const ItemList = ({ items, toggleItem, editItem }: Props) => {
       </div>
     </div>
   );
-};
-
-export default ItemList;
+}

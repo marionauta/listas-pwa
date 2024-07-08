@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { Button, DialogTrigger, Header, Heading } from "react-aria-components";
 import { Link } from "react-router-dom";
-import { DocumentId, isValidDocumentId } from "@automerge/automerge-repo";
-import { ListCreatorDialog } from "./ListCreatorDialog";
+import { type DocumentId, isValidDocumentId } from "@automerge/automerge-repo";
+import ListCreatorDialog from "./ListCreatorDialog";
 
 function useListsReader() {
   const [listIds, setListIds] = useState<DocumentId[]>([]);
