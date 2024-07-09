@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { type DocumentId, isValidDocumentId } from "@automerge/automerge-repo";
 import ListCreatorDialog from "./ListCreatorDialog";
 import JoinListModal from "./JoinListModal";
+import { useRepo } from "@automerge/automerge-repo-react-hooks";
+import { ItemList } from "./models/List";
 
 function useListsReader() {
   const [listIds, setListIds] = useState<DocumentId[]>([]);
@@ -50,8 +52,33 @@ function useListsReader() {
   return { listIds, reloadListIds };
 }
 
+function useListsNames(listIds: DocumentId[]) {
+  const repo = useRepo();
+  const [lists, setLists] = useState<{ id: DocumentId; name: string }[]>([]);
+  const readListNames = useCallback(
+    async (listIds: DocumentId[]) => {
+      const lists: { id: DocumentId; name: string }[] = [];
+      for (const listId of listIds) {
+        const handle = repo.find<ItemList>(listId);
+        const doc = await handle.doc();
+        if (!doc) {
+          continue;
+        }
+        lists.push({ id: handle.documentId, name: doc.name || "???" });
+      }
+      setLists(lists);
+    },
+    [repo],
+  );
+  useEffect(() => {
+    readListNames(listIds).catch(console.error);
+  }, [listIds, readListNames]);
+  return lists;
+}
+
 export default function ListsScreen() {
-  const { listIds: lists } = useListsReader();
+  const { listIds } = useListsReader();
+  const lists = useListsNames(listIds);
 
   return (
     <>
@@ -69,8 +96,13 @@ export default function ListsScreen() {
       <div className="list-container">
         <div className="list-content">
           {lists.map((list) => (
-            <Link key={list} to={`/list/${list}`}>
-              <div className="row">{list}</div>
+            <Link key={list.id} to={`/list/${list.id}`}>
+              <div className="row">
+                <span>{list.name}</span>
+                <span style={{ color: "#aaa", fontSize: "0.8em" }}>
+                  #{list.id}
+                </span>
+              </div>
             </Link>
           ))}
         </div>
