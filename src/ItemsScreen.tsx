@@ -50,8 +50,12 @@ function useList(listId: DocumentId | undefined) {
               (item) => item.id === action.payload.id,
             );
             if (index !== -1) {
-              doc.items[index].name = action.payload.name;
-              doc.items[index].completedAt = action.payload.completedAt;
+              if ("name" in action.payload) {
+                doc.items[index].name = action.payload.name;
+              }
+              if ("completedAt" in action.payload) {
+                doc.items[index].completedAt = action.payload.completedAt;
+              }
             }
           });
           break;
@@ -97,22 +101,21 @@ export default function ItemsScreen() {
   );
 
   const updateItem = useCallback(
-    (item: Item) => {
-      dispatch({ action: "update-item", payload: { listId, ...item } });
+    (item: Partial<Item>) => {
+      dispatch({ action: "update-item", payload: item });
     },
     [dispatch],
   );
 
   const deleteCompleted = useCallback(() => {
-    dispatch({ action: "delete-completed", payload: { listId } });
+    dispatch({ action: "delete-completed" });
   }, [dispatch]);
 
   const toggleItem = useCallback(
-    (item: Item) => () =>
+    (item: Pick<Item, "id" | "completedAt">) => () =>
       updateItem({
-        ...item,
-        completedAt:
-          item.completedAt === null ? Math.floor(Date.now() / 1000) : null,
+        id: item.id,
+        completedAt: item.completedAt === null ? new Date() : null,
       }),
     [updateItem],
   );

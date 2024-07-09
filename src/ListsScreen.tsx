@@ -3,6 +3,7 @@ import { Button, DialogTrigger, Header, Heading } from "react-aria-components";
 import { Link } from "react-router-dom";
 import { type DocumentId, isValidDocumentId } from "@automerge/automerge-repo";
 import ListCreatorDialog from "./ListCreatorDialog";
+import JoinListModal from "./JoinListModal";
 
 function useListsReader() {
   const [listIds, setListIds] = useState<DocumentId[]>([]);
@@ -60,7 +61,10 @@ export default function ListsScreen() {
           <Button>Create</Button>
           <ListCreatorDialog />
         </DialogTrigger>
-        <Button>Join</Button>
+        <DialogTrigger>
+          <Button>Join</Button>
+          <JoinListModal />
+        </DialogTrigger>
       </Header>
       <div className="list-container">
         <div className="list-content">
