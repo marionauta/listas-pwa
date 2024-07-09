@@ -1,5 +1,5 @@
 import { FormEvent, useCallback } from "react";
-import { type DocumentId, isValidDocumentId } from "@automerge/automerge-repo";
+import type { DocumentId } from "@automerge/automerge-repo";
 import { useDocument } from "@automerge/automerge-repo-react-hooks";
 import { Button, Input, Header, Form } from "react-aria-components";
 import { Link, useLoaderData } from "react-router-dom";
@@ -7,19 +7,9 @@ import { ulid } from "ulid";
 import ItemRow from "./ItemRow";
 import type { Item } from "./models/Item";
 import type { ItemList as ItemListType } from "./models/List";
+import type { LoaderData } from "./itemsScreenLoader";
 
-interface LoaderData {
-  listId: DocumentId | undefined;
-}
-
-export function loader({ params }: any): LoaderData {
-  const listId = params.listId;
-  if (isValidDocumentId(listId)) {
-    return { listId };
-  }
-  return { listId: undefined };
-}
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ServerAction = { action: string; payload?: any };
 
 function useList(listId: DocumentId | undefined) {
@@ -32,13 +22,12 @@ function useList(listId: DocumentId | undefined) {
           if (!action.payload.name) {
             break;
           }
-          const id = ulid();
           changeList((doc) => {
             if (!doc.items) {
               doc.items = [] as unknown as ItemListType["items"];
             }
             doc.items.push({
-              id,
+              id: ulid(),
               name: action.payload.name,
               completedAt: null,
             });
@@ -60,8 +49,8 @@ function useList(listId: DocumentId | undefined) {
           });
           break;
         case "delete-completed":
-          const indexesToDelete: number[] = [];
           changeList((doc) => {
+            const indexesToDelete: number[] = [];
             for (let index = 0; index < doc.items.length; index++) {
               if (doc.items[index].completedAt !== null) {
                 indexesToDelete.push(index);
