@@ -17,10 +17,9 @@ export default function ListCreatorDialog() {
   const navigate = useNavigate();
   const createItemList = useCallback(
     (name: string) => {
-      const handle = repo.create<ItemList>();
-      handle.change((doc) => {
-        doc.name = name;
-        doc.items = [] as unknown as ItemList["items"];
+      const handle = repo.create<ItemList>({
+        name,
+        items: [] as unknown as ItemList["items"],
       });
       return handle.documentId;
     },

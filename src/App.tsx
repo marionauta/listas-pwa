@@ -15,5 +15,9 @@ export default function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <div className="app-frame">
+      <RouterProvider router={router} />
+    </div>
+  );
 }

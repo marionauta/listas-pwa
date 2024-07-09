@@ -6,8 +6,14 @@
     --color-background-secondary: rgb(235, 235, 235);
     --color-separator: var(--color-gray);
     --color-border: rgb(220, 220, 220);
-
     --color-background-overlay: var(--color-background);
+
+    --size-toolbar-height: 58px;
+    --size-app-frame-height: 100svh;
+}
+
+html {
+    overscroll-behavior: none;
 }
 
 body {
@@ -15,11 +21,10 @@ body {
     margin: 0;
     color: var(--color-text);
     background: var(--color-background);
-    /* disable safari mobile zoom */
-    touch-action: pan-x pan-y;
 }
 
-button {
+button,
+.button {
     background: var(--color-background-secondary);
     border: 1px solid var(--color-border);
     border-radius: 2px;
@@ -27,6 +32,11 @@ button {
     padding: 3px;
     min-height: 24px;
     min-width: 24px;
+    text-decoration: none;
+    font: 13px sans-serif;
+    box-sizing: border-box;
+    text-align: center;
+    line-height: 1.4;
 }
 
 input[type="text"] {
@@ -47,31 +57,29 @@ input[type="checkbox"]:checked + span {
 #root {
     display: flex;
     flex-direction: column;
+    height: 100svh;
 }
 
-.banner {
-    padding: 8px;
-    text-align: center;
-    color: #fff;
+.app-frame {
+    height: var(--size-app-frame-height);
 }
 
-.banner--good {
-    padding: 0;
-    height: 4px;
-    background: green;
-}
-
-.banner--error {
-    background: red;
-}
-
-.banner--warning {
-    background: orange;
+@media screen and (min-width: 30em) {
+    :root {
+        --size-app-frame-height: 80svh;
+    }
+    .app-frame {
+        width: 30em;
+        margin: auto auto;
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+        box-shadow: 0 0 20px rgba(0 0 0 / 0.1);
+    }
 }
 
 .toolbar {
     box-sizing: border-box;
-    height: 58px;
+    height: var(--size-toolbar-height);
     padding: 1em;
     display: flex;
     gap: 8px;
@@ -89,10 +97,7 @@ input[type="checkbox"]:checked + span {
 
 .list-container {
     overflow: auto;
-}
-
-.list-content {
-    height: calc(100vh - 58px - 4px);
+    height: calc(var(--size-app-frame-height) - var(--size-toolbar-height));
 }
 
 .row {

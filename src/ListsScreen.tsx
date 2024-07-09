@@ -62,11 +62,15 @@ export default function ListsScreen() {
         </DialogTrigger>
         <Button>Join</Button>
       </Header>
-      {lists.map((list) => (
-        <Link key={list} to={`/list/${list}`}>
-          <div className="row">{list}</div>
-        </Link>
-      ))}
+      <div className="list-container">
+        <div className="list-content">
+          {lists.map((list) => (
+            <Link key={list} to={`/list/${list}`}>
+              <div className="row">{list}</div>
+            </Link>
+          ))}
+        </div>
+      </div>
     </>
   );
 }

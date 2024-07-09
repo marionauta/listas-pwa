@@ -4,7 +4,7 @@
   "scripts": {
     "start": "bunx --bun vite",
     "build": "tsc && bunx --bun vite build",
-	"build:cf": "tsc && npx vite build",
+    "build:cf": "tsc && npx vite build",
     "preview": "bunx --bun vite preview"
   },
   "dependencies": {
@@ -19,6 +19,7 @@
     "react-dom": "18.2.0",
     "react-router-dom": "^6.24.1",
     "react-use-websocket": "4.8.1",
+    "ulid": "^2.3.0",
     "vite-plugin-wasm": "^3.3.0"
   },
   "devDependencies": {

@@ -3,6 +3,7 @@ import { type DocumentId, isValidDocumentId } from "@automerge/automerge-repo";
 import { useDocument } from "@automerge/automerge-repo-react-hooks";
 import { Button, Input, Header, Form } from "react-aria-components";
 import { Link, useLoaderData } from "react-router-dom";
+import { ulid } from "ulid";
 import ItemRow from "./ItemRow";
 import type { Item } from "./models/Item";
 import type { ItemList as ItemListType } from "./models/List";
@@ -31,7 +32,7 @@ function useList(listId: DocumentId | undefined) {
           if (!action.payload.name) {
             break;
           }
-          const id = crypto.randomUUID();
+          const id = ulid();
           changeList((doc) => {
             if (!doc.items) {
               doc.items = [] as unknown as ItemListType["items"];
@@ -128,10 +129,10 @@ export default function ItemsScreen() {
     <>
       <Form onSubmit={onCreateItem}>
         <Header className="toolbar">
-          <Link to="/">
-            <span>X</span>
+          <Link to="/" className="button">
+            X
           </Link>
-          <Input type="text" name="item-name" />
+          <Input type="text" name="item-name" required />
           <Button type="submit">Add</Button>
           <Button onPress={deleteCompleted}>Delete completed</Button>
         </Header>
