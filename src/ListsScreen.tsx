@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { Button, DialogTrigger, Header, Heading } from "react-aria-components";
 import { Link } from "react-router-dom";
-import { type DocumentId, isValidDocumentId } from "@automerge/automerge-repo";
+import {
+  type DocumentId,
+  isValidDocumentId,
+} from "@automerge/automerge-repo/slim";
 import ListCreatorDialog from "./ListCreatorDialog";
 import JoinListModal from "./JoinListModal";
 import { useRepo } from "@automerge/automerge-repo-react-hooks";

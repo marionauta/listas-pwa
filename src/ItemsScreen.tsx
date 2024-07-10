@@ -1,5 +1,5 @@
 import { FormEvent, useCallback } from "react";
-import type { DocumentId } from "@automerge/automerge-repo";
+import type { DocumentId } from "@automerge/automerge-repo/slim";
 import { useDocument } from "@automerge/automerge-repo-react-hooks";
 import { Button, Input, Header, Form } from "react-aria-components";
 import { Link, useLoaderData } from "react-router-dom";
@@ -57,7 +57,7 @@ function useList(listId: DocumentId | undefined) {
               }
             }
             for (const index of indexesToDelete.reverse()) {
-              doc.items.deleteAt(index);
+              doc.items.splice(index, 1);
             }
           });
           break;

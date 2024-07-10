@@ -1,4 +1,7 @@
-import { type DocumentId, isValidDocumentId } from "@automerge/automerge-repo";
+import {
+  type DocumentId,
+  isValidDocumentId,
+} from "@automerge/automerge-repo/slim";
 import { LoaderFunction } from "react-router-dom";
 
 export interface LoaderData {

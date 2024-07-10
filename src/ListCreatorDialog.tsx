@@ -19,7 +19,7 @@ export default function ListCreatorDialog() {
     (name: string) => {
       const handle = repo.create<ItemList>({
         name,
-        items: [] as unknown as ItemList["items"],
+        items: [],
       });
       return handle.documentId;
     },
