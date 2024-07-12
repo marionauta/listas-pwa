@@ -4,7 +4,7 @@ import { useDocument } from "@automerge/automerge-repo-react-hooks";
 import { Button, Input, Header, Form } from "react-aria-components";
 import { Link, useLoaderData } from "react-router-dom";
 import { ulid } from "ulid";
-import ItemRow from "./ItemRow";
+import ItemsRows from "./ItemsRows";
 import type { Item } from "./models/Item";
 import type { ItemList as ItemListType } from "./models/List";
 import type { LoaderData } from "./itemsScreenLoader";
@@ -129,7 +129,7 @@ export default function ItemsScreen() {
           <Button onPress={deleteCompleted}>Delete completed</Button>
         </Header>
       </Form>
-      <ItemRow
+      <ItemsRows
         items={list.items}
         toggleItem={toggleItem}
         editItem={updateItem}

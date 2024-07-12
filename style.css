@@ -67,6 +67,8 @@ input[type="checkbox"]:checked + span {
 
 .app-frame {
     height: var(--size-app-frame-height);
+    display: flex;
+    flex-direction: column;
 }
 
 @media screen and (min-width: 30em) {
@@ -103,7 +105,8 @@ input[type="checkbox"]:checked + span {
 
 .list-container {
     overflow: auto;
-    height: calc(var(--size-app-frame-height) - var(--size-toolbar-height));
+    flex-grow: 1;
+    flex-shrink: 0;
 }
 
 .row {
@@ -117,6 +120,14 @@ input[type="checkbox"]:checked + span {
 
 .row .principal {
     flex-grow: 1;
+}
+
+.list-container-empty {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .react-aria-ModalOverlay {

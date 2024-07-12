@@ -8,9 +8,9 @@ type Props = {
   editItem: (item: Item) => void;
 };
 
-export default function ItemRow({ items, toggleItem, editItem }: Props) {
+export default function ItemsRows({ items, toggleItem, editItem }: Props) {
   if (items === undefined || items.length === 0) {
-    return null;
+    return <EmptyItems />;
   }
   return (
     <div className="list-container">
@@ -31,6 +31,14 @@ export default function ItemRow({ items, toggleItem, editItem }: Props) {
           </label>
         ))}
       </div>
+    </div>
+  );
+}
+
+function EmptyItems() {
+  return (
+    <div className="list-container-empty">
+      <span>Nothing here.</span>
     </div>
   );
 }
