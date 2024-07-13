@@ -107,6 +107,7 @@ input[type="checkbox"]:checked + span {
     overflow: auto;
     flex-grow: 1;
     flex-shrink: 0;
+    padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
 .row {
