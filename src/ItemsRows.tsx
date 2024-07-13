@@ -10,7 +10,7 @@ type Props = {
 
 export default function ItemsRows({ items, toggleItem, editItem }: Props) {
   if (items === undefined || items.length === 0) {
-    return <EmptyItems />;
+    return <EmptyItems placeholder="Nothing here." />;
   }
   return (
     <div className="list-container">
@@ -35,10 +35,10 @@ export default function ItemsRows({ items, toggleItem, editItem }: Props) {
   );
 }
 
-function EmptyItems() {
+export function EmptyItems({ placeholder }: { placeholder: string }) {
   return (
     <div className="list-container-empty">
-      <span>Nothing here.</span>
+      <span>{placeholder}</span>
     </div>
   );
 }

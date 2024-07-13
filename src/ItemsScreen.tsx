@@ -1,10 +1,10 @@
 import { FormEvent, useCallback } from "react";
 import type { DocumentId } from "@automerge/automerge-repo/slim";
 import { useDocument } from "@automerge/automerge-repo-react-hooks";
-import { Button, Input, Header, Form } from "react-aria-components";
+import { Button, Input, Form } from "react-aria-components";
 import { Link, useLoaderData } from "react-router-dom";
 import { ulid } from "ulid";
-import ItemsRows from "./ItemsRows";
+import ItemsRows, { EmptyItems } from "./ItemsRows";
 import type { Item } from "./models/Item";
 import type { ItemList as ItemListType } from "./models/List";
 import type { LoaderData } from "./itemsScreenLoader";
@@ -109,31 +109,33 @@ export default function ItemsScreen() {
     [updateItem],
   );
 
-  if (!listId) {
-    return <span>Invalid document id</span>;
-  }
-
-  if (!list) {
-    return <span>Retrieving list...</span>;
-  }
+  const isFormDisabled = !listId || !list;
 
   return (
     <>
-      <Form onSubmit={onCreateItem}>
-        <Header className="toolbar">
-          <Link to="/" className="button">
-            X
-          </Link>
-          <Input type="text" name="item-name" required />
-          <Button type="submit">Add</Button>
-          <Button onPress={deleteCompleted}>Delete completed</Button>
-        </Header>
+      <Form className="toolbar" onSubmit={onCreateItem}>
+        <Link to="/" className="button">
+          X
+        </Link>
+        <Input type="text" name="item-name" required />
+        <Button type="submit" isDisabled={isFormDisabled}>
+          Add
+        </Button>
+        <Button onPress={deleteCompleted} isDisabled={isFormDisabled}>
+          Delete completed
+        </Button>
       </Form>
-      <ItemsRows
-        items={list.items}
-        toggleItem={toggleItem}
-        editItem={updateItem}
-      />
+      {!listId ? (
+        <EmptyItems placeholder="Invalid list ID." />
+      ) : !list ? (
+        <EmptyItems placeholder="Retrieving list..." />
+      ) : (
+        <ItemsRows
+          items={list.items}
+          toggleItem={toggleItem}
+          editItem={updateItem}
+        />
+      )}
     </>
   );
 }
