@@ -9,8 +9,8 @@ import {
   Modal,
   TextField,
 } from "react-aria-components";
-import type { ItemList } from "./models/List";
 import { useNavigate } from "react-router-dom";
+import type { ItemList } from "../../models/List";
 
 export default function ListCreatorDialog() {
   const repo = useRepo();

@@ -1,13 +1,15 @@
-import ListScreen from "./screens/list_screen";
-import listScreenLoader from "./screens/list_screen_loader";
-import ListsScreen from "./ListsScreen";
+import { lazy } from "react";
+import listScreenLoader from "./screens/list/list_screen_loader";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+const HomeScreen = lazy(() => import("./screens/home/home_screen"));
+const ListScreen = lazy(() => import("./screens/list/list_screen"));
 
 export default function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <ListsScreen />,
+      element: <HomeScreen />,
     },
     {
       path: "/list/:listId",

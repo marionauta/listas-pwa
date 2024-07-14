@@ -2,8 +2,8 @@ import { FormEvent, useCallback } from "react";
 import { Button, Input, Form, Heading } from "react-aria-components";
 import { Link } from "react-router-dom";
 import ItemsRows, { EmptyItems } from "./items_rows";
-import type { Item } from "../models/Item";
-import Spacer from "../components/spacer";
+import type { Item } from "../../models/Item";
+import Spacer from "../../components/spacer";
 import { useList } from "./list_screen_hooks";
 
 export default function ListScreen() {

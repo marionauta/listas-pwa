@@ -1,6 +1,6 @@
 import { Button, DialogTrigger } from "react-aria-components";
 import ItemEditor from "./item_editor";
-import type { Item } from "../models/Item";
+import type { Item } from "../../models/Item";
 
 type Props = {
   items: Item[] | undefined;

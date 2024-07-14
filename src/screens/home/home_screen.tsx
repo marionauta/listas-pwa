@@ -8,8 +8,8 @@ import {
 import ListCreatorDialog from "./ListCreatorDialog";
 import JoinListModal from "./JoinListModal";
 import { useRepo } from "@automerge/automerge-repo-react-hooks";
-import type { ItemList } from "./models/List";
-import Spacer from "./components/spacer";
+import type { ItemList } from "../../models/List";
+import Spacer from "../../components/spacer";
 
 function useListsReader() {
   const [listIds, setListIds] = useState<DocumentId[]>([]);

@@ -9,7 +9,7 @@ import {
   Form,
   Label,
 } from "react-aria-components";
-import type { Item } from "../models/Item";
+import type { Item } from "../../models/Item";
 
 type Props = {
   item: Item;

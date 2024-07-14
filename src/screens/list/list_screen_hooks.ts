@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useLoaderData } from "react-router";
 import { useDocument } from "@automerge/automerge-repo-react-hooks";
 import { ulid } from "ulid";
-import type { ItemList as ItemListType } from "../models/List";
+import type { ItemList as ItemListType } from "../../models/List";
 import type { LoaderData } from "./list_screen_loader";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
