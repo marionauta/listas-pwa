@@ -1,14 +1,20 @@
 import { Button, DialogTrigger } from "react-aria-components";
-import ItemEditor from "./ItemEditor";
-import type { Item } from "./models/Item";
+import ItemEditor from "./item_editor";
+import type { Item } from "../models/Item";
 
 type Props = {
   items: Item[] | undefined;
   toggleItem: (item: Item) => () => void;
-  editItem: (item: Item) => void;
+  editItem: (item: Partial<Item>) => void;
+  deleteItem: (id: Item["id"]) => void;
 };
 
-export default function ItemsRows({ items, toggleItem, editItem }: Props) {
+export default function ItemsRows({
+  items,
+  toggleItem,
+  editItem,
+  deleteItem,
+}: Props) {
   if (items === undefined || items.length === 0) {
     return <EmptyItems placeholder="Nothing here." />;
   }
@@ -26,7 +32,11 @@ export default function ItemsRows({ items, toggleItem, editItem }: Props) {
             <span className="principal">{item.name}</span>
             <DialogTrigger>
               <Button>⌘</Button>
-              <ItemEditor item={item} saveItem={editItem} />
+              <ItemEditor
+                item={item}
+                editItem={editItem}
+                deleteItem={deleteItem}
+              />
             </DialogTrigger>
           </label>
         ))}

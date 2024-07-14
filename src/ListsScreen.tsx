@@ -8,7 +8,8 @@ import {
 import ListCreatorDialog from "./ListCreatorDialog";
 import JoinListModal from "./JoinListModal";
 import { useRepo } from "@automerge/automerge-repo-react-hooks";
-import { ItemList } from "./models/List";
+import type { ItemList } from "./models/List";
+import Spacer from "./components/spacer";
 
 function useListsReader() {
   const [listIds, setListIds] = useState<DocumentId[]>([]);
@@ -87,6 +88,7 @@ export default function ListsScreen() {
     <>
       <Header className="toolbar">
         <Heading level={1}>Lists</Heading>
+        <Spacer />
         <DialogTrigger>
           <Button>Create</Button>
           <ListCreatorDialog />

@@ -1,5 +1,5 @@
-import ItemsScreen from "./ItemsScreen";
-import itemsScreenLoader from "./itemsScreenLoader";
+import ListScreen from "./screens/list_screen";
+import listScreenLoader from "./screens/list_screen_loader";
 import ListsScreen from "./ListsScreen";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -11,8 +11,8 @@ export default function App() {
     },
     {
       path: "/list/:listId",
-      loader: itemsScreenLoader,
-      element: <ItemsScreen />,
+      loader: listScreenLoader,
+      element: <ListScreen />,
     },
   ]);
 
