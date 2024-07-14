@@ -5,6 +5,7 @@ import ItemsRows, { EmptyItems } from "./items_rows";
 import type { Item } from "../../models/Item";
 import Spacer from "../../components/spacer";
 import { useList } from "./list_screen_hooks";
+import ListShareButton from "./list_share_button";
 
 export default function ListScreen() {
   const { list, listId, dispatch } = useList();
@@ -60,6 +61,7 @@ export default function ListScreen() {
         </Link>
         <Heading level={1}>{list?.name ?? "List"}</Heading>
         <Spacer />
+        <ListShareButton title={list?.name} />
       </div>
       <Form className="toolbar" onSubmit={onCreateItem}>
         <Input type="text" name="item-name" required />
