@@ -4,9 +4,10 @@ import { useDocument } from "@automerge/automerge-repo-react-hooks";
 import { ulid } from "ulid";
 import type { ItemList as ItemListType } from "../../models/List";
 import type { LoaderData } from "./list_screen_loader";
+import { deleteAt } from "@automerge/automerge-repo/slim";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ListAction = { action: string; payload?: any };
+type ListAction = { action: string; payload?: any };
 
 export function useList() {
   const { listId } = useLoaderData() as LoaderData;
@@ -53,7 +54,7 @@ export function useList() {
             if (index === -1) {
               return;
             }
-            list.items.splice(index, 1);
+            deleteAt(list.items, index);
           });
         case "delete-completed-items":
           changeList((doc) => {
@@ -64,7 +65,7 @@ export function useList() {
               }
             }
             for (const index of indexesToDelete.reverse()) {
-              doc.items.splice(index, 1);
+              deleteAt(doc.items, index);
             }
           });
           break;
