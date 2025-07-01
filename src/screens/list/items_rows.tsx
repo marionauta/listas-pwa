@@ -22,7 +22,7 @@ export default function ItemsRows({
     <div className="list-container">
       <div className="list-content">
         {items.map((item) => (
-          <label key={item.id} className="row" htmlFor={item.id}>
+          <label key={item.id} className="row item-row" htmlFor={item.id}>
             <input
               id={item.id}
               type="checkbox"

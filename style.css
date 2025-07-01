@@ -7,9 +7,11 @@
     --color-separator: var(--color-gray);
     --color-border: rgb(220, 220, 220);
     --color-background-modal-overlay: rgba(0 0 0 / 0.5);
+    --color-background-toolbar: rgb(230, 230, 230);
+    --color-background-toolbar-hover: rgb(210, 210, 210);
     --color-background-modal: rgba(255, 255, 255, 0.6);
 
-    --size-toolbar-height: 45px;
+    --size-toolbar-height: 48px;
     --size-app-frame-height: 100svh;
 }
 
@@ -90,14 +92,19 @@ input[type="checkbox"]:checked + span {
 }
 
 .toolbar {
-    box-sizing: border-box;
-    padding: 0.5em 1em;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 8px;
-    border-bottom: 1px solid var(--color-separator);
     height: var(--size-toolbar-height);
+    background-color: var(--color-background-toolbar);
+}
+
+.toolbar :first-child {
+    padding-left: 1em;
+}
+
+.toolbar + .toolbar {
+    border-top: 1px solid var(--color-separator);
 }
 
 .toolbar h1.react-aria-Heading {
@@ -105,8 +112,35 @@ input[type="checkbox"]:checked + span {
     margin: 0;
 }
 
-.toolbar input {
+.toolbar input[name="item-name"] {
     flex: 1;
+    height: 100%;
+    border: 0;
+    font-size: 16px;
+    border-bottom: 1px solid var(--color-background-toolbar);
+    box-sizing: border-box;
+    padding: 0 1em;
+    border-radius: 0;
+}
+
+.toolbar button,
+.toolbar .button {
+    height: var(--size-toolbar-height);
+    line-height: var(--size-toolbar-height);
+    min-width: var(--size-toolbar-height);
+    padding: 0 1em;
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+
+    &[data-hovered],
+    &:hover {
+        background-color: var(--color-background-toolbar-hover);
+    }
+
+    &:not([data-disabled]) {
+        cursor: pointer;
+    }
 }
 
 .list-container {
@@ -118,12 +152,26 @@ input[type="checkbox"]:checked + span {
 }
 
 .row {
-    padding: 1em;
     display: flex;
     gap: 8px;
     align-items: center;
     border-bottom: 1px solid var(--color-separator);
     user-select: none;
+    box-sizing: border-box;
+}
+
+.row button {
+    height: 50px;
+    width: 50px;
+    font-size: 20px;
+    padding: 0;
+
+    border: 0;
+    background-color: transparent;
+
+    &[data-hovered] {
+        background-color: var(--color-background-toolbar);
+    }
 }
 
 .row .principal {
@@ -136,6 +184,21 @@ input[type="checkbox"]:checked + span {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+/* Home Screen */
+
+.home-row {
+    padding: 1em;
+}
+
+/* Items Screen */
+
+.item-row input[type="checkbox"] {
+    margin: 15px;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
 }
 
 .react-aria-ModalOverlay {

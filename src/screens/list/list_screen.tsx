@@ -64,11 +64,19 @@ export default function ListScreen() {
         <ListShareButton title={list?.name} />
       </div>
       <Form className="toolbar" onSubmit={onCreateItem}>
-        <Input type="text" name="item-name" required />
+        <Input
+          type="text"
+          name="item-name"
+          required
+          placeholder="pan, galletas, tomates..."
+        />
         <Button type="submit" isDisabled={isFormDisabled}>
           Add
         </Button>
-        <Button onPress={deleteCompleted} isDisabled={isFormDisabled}>
+        <Button
+          onPress={deleteCompleted}
+          isDisabled={isFormDisabled || list.items.length === 0}
+        >
           Delete completed
         </Button>
       </Form>

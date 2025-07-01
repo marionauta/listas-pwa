@@ -102,7 +102,7 @@ export default function ListsScreen() {
         <div className="list-content">
           {lists.map((list) => (
             <Link key={list.id} to={`/list/${list.id}`}>
-              <div className="row">
+              <div className="row home-row">
                 <span>{list.name}</span>
                 <span style={{ color: "#aaa", fontSize: "0.8em" }}>
                   #{list.id}
