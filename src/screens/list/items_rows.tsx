@@ -1,12 +1,12 @@
 import { Button, DialogTrigger } from "react-aria-components";
 import ItemEditor from "./item_editor";
-import type { Item } from "../../models/Item";
+import type { Item, ItemId, ItemChangePayload } from "../../models/Item";
 
 type Props = {
   items: Item[] | undefined;
   toggleItem: (item: Item) => () => void;
-  editItem: (item: Partial<Item>) => void;
-  deleteItem: (id: Item["id"]) => void;
+  editItem: (item: ItemChangePayload) => void;
+  deleteItem: (id: ItemId) => void;
 };
 
 export default function ItemsRows({

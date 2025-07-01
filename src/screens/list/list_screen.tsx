@@ -2,7 +2,7 @@ import { FormEvent, useCallback } from "react";
 import { Button, Input, Form, Heading } from "react-aria-components";
 import { Link } from "react-router-dom";
 import ItemsRows, { EmptyItems } from "./items_rows";
-import type { Item } from "../../models/Item";
+import type { Item, ItemChangePayload } from "../../models/Item";
 import Spacer from "../../components/spacer";
 import { useList } from "./list_screen_hooks";
 import ListShareButton from "./list_share_button";
@@ -27,7 +27,7 @@ export default function ListScreen() {
   );
 
   const updateItem = useCallback(
-    (item: Partial<Item>) => {
+    (item: ItemChangePayload) => {
       dispatch({ action: "update-item", payload: item });
     },
     [dispatch],

@@ -9,12 +9,12 @@ import {
   Form,
   Label,
 } from "react-aria-components";
-import type { Item } from "../../models/Item";
+import type { Item, ItemChangePayload, ItemId } from "../../models/Item";
 
 type Props = {
   item: Item;
-  editItem: (item: Partial<Item>) => void;
-  deleteItem: (id: Item["id"]) => void;
+  editItem: (item: ItemChangePayload) => void;
+  deleteItem: (id: ItemId) => void;
 };
 
 function ItemEditor({ item, editItem, deleteItem }: Props) {
@@ -25,7 +25,8 @@ function ItemEditor({ item, editItem, deleteItem }: Props) {
       const formData = new FormData(form);
       const name = formData.get("name");
       if (typeof name !== "string") return;
-      const updated: Partial<Item> = {
+      const updated: ItemChangePayload = {
+        id: item.id,
         name,
       };
       editItem(updated);

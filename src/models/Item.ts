@@ -3,3 +3,6 @@ export interface Item {
   name: string;
   completedAt: Date | null;
 }
+
+export type ItemId = Item["id"];
+export type ItemChangePayload = Pick<Item, "id"> & Partial<Omit<Item, "id">>;
