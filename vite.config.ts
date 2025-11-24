@@ -19,6 +19,7 @@ export default defineConfig({
       registerType: "autoUpdate",
       workbox: {
         globPatterns: ["**/*.{js,css,png,wasm}"],
+        maximumFileSizeToCacheInBytes: 3000000,
       },
       manifest: {
         id: "/",
