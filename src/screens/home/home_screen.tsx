@@ -63,8 +63,8 @@ function useListsNames(listIds: DocumentId[]) {
     async (listIds: DocumentId[]) => {
       const lists: { id: DocumentId; name: string }[] = [];
       for (const listId of listIds) {
-        const handle = repo.find<ItemList>(listId);
-        const doc = await handle.doc();
+        const handle = await repo.find<ItemList>(listId);
+        const doc = handle.doc();
         if (!doc) {
           continue;
         }
